@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class WebhookController extends Controller
 {
@@ -44,16 +45,18 @@ class WebhookController extends Controller
         $hash = hash_hmac('sha256', $body, $channelSecret, true);
         $signature = base64_encode($hash);
 
-        if ($this->signature != $signature) {
+        if ($this->signature !== $signature) {
             return response()->json('Invalid Signature', 400);
         } else {
             $this->events = json_decode($body, true);
             if (is_array($this->events['events'])) {
                 foreach ($this->events['events'] as $event) {
-                    if ($event['type'] == 'message') {
-                        // your playground
+                    if ($event['type'] === 'message') {
+                        $textMessageBuilder = new TextMessageBuilder('okemantap');
+                        $this->bot->replyMessage($event['replyToken'],$textMessageBuilder);
                     } else {
-                        // add bot
+                        $textMessageBuilder = new TextMessageBuilder('sudah di add dong bos');
+                        $this->bot->replyMessage($event['replyToken'],$textMessageBuilder);
                     }
                 }
             }
