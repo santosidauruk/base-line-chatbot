@@ -51,12 +51,12 @@ class WebhookController extends Controller
             $this->events = json_decode($body, true);
             if (is_array($this->events['events'])) {
                 foreach ($this->events['events'] as $event) {
-                    if ($event['type'] === 'message') {
-                        $textMessageBuilder = new TextMessageBuilder('okemantap');
-                        $this->bot->replyMessage($event['replyToken'],$textMessageBuilder);
+                    if ($event['type'] == 'message') {
+                        $textMessageBuilder = new TextMessageBuilder('oke halo');
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                     } else {
-                        $textMessageBuilder = new TextMessageBuilder('sudah di add dong bos');
-                        $this->bot->replyMessage($event['replyToken'],$textMessageBuilder);
+                        $textMessageBuilder = new TextMessageBuilder('siap udah add broh!');
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                     }
                 }
             }
